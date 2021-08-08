@@ -68,4 +68,26 @@ main button {
 
 .all-done {
     display: none;
+    flex-direction: column;
+    align-items: center;
 }
+
+.all-done h2 {
+    width: 60%;
+    margin-top: 100px;
+    margin-bottom: 20px;
+}
+
+.all-done p {
+    width: 60%;
+    margin-bottom: 20px;
+}
+
+.input-initials {
+    margin-left: 5px;
+    padding-right: 5px;
+    padding-left: 5px;
+    background-color: var(--buttonColor);
+}
+
+
