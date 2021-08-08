@@ -43,3 +43,29 @@ main button {
     background-color: var(--buttonColor);
     font-weight: bold;
 }
+
+.quiz {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+}
+
+.question {
+    width: 60%;
+    margin-top: 100px;
+    margin-bottom: 20px;
+}
+
+.answers {
+    width: 60%;
+}
+
+.answers button {
+    margin: 5px;
+    padding: 5px;
+    background-color: var(--buttonColor);
+}
+
+.all-done {
+    display: none;
+}
