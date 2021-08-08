@@ -1,0 +1,45 @@
+* {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    background-color: #c8d8e4;
+}
+
+:root {
+    --buttonColor: #2b6777;
+}
+
+header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;  
+    height: 40px;  
+    margin: 20px;
+}
+
+header button {
+    padding: 5px;
+    background-color: var(--buttonColor);
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    align-items: center;
+    
+}
+
+main h1 {
+    display: inline-block;
+    font-size: 40px;
+    font-weight: bold;
+    height: 80px;
+    text-align: center;
+}
+
+main button {
+    width: 10%;
+    height: 40px;
+    margin-top: 20px;
+    background-color: var(--buttonColor);
+    font-weight: bold;
+}
