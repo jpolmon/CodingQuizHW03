@@ -1,34 +1,83 @@
 let startQuiz = document.querySelector('.start-button');
-let highscores = document.querySelector('.highscores-button');
+let hscoresBtn = document.querySelector('.highscores-button');
+let button1 = document.querySelector('.button1');
+let button2 = document.querySelector('.button2');
+let button3 = document.querySelector('.button3');
+let button4 = document.querySelector('.button4');
+let reset = document.querySelector('.clear-scores');
+let goBack = document.querySelector('.go-back');
+
 let inputInitials = document.querySelector('.input-initials');
+
 let mainPage = document.querySelector('main');
 let quizPage = document.querySelector('.quiz');
 let endPage = document.querySelector('.all-done');
+let displayScore = document.querySelector('.display-score');
+let hscoresPage = document.querySelector('.highscores');
 let timeEl = document.querySelector('.time-left');
 let initials = document.querySelector('#initials');
+let question = document.querySelector('.question');
+let correct = document.querySelector('.correct');
+let wrong = document.querySelector('.wrong');
+let scores = document.querySelector('.scores');
 
+let questionOptions = [
+    {question: "Which of the following is not a primitive data type in JavaScript?", answers: ["number", "string", "double", "boolean"], key: "2"},
+    {question: "What is the syntax for joining arrays in JavaScript?", answers: [".push()", ".concat()", ".pop()", ".splice()"], key: "1"},
+    {question: "The ______ is a powerful component of the browser dev tools that can help locate/troubleshoot JavaScript issues.", answers: ["Elements", "Application", "Network", "Console"], key: "3"},
+    {question: "Local storage can only store information in this data type.", answers: ["string", "number", "bigint", "boolean"], key: "0"},
+    {question: "If you can access properties of a variable called thing with thing.property, then it is a(n) ______", answers: ["method", "object", "double", "boolean"], key: "1"},
+    {question: "What is the function for determining the location of an element in an array?", answers: [".splice()", ".length()", ".contains()", ".indexOf()"], key: "3"},
+    {question: "What would you include in your JavaScript file to utilize an HTML button?", answers: ["Event Listener", "Method", "Array", "Number"], key: "0"},
+    {question: "What display type would you use if you want items to be dynamically sized?", answers: ["block", "inline", "flex", "inline-block"], key: "2"},
+    {question: "Which of the following is a true conditional statement?", answers: ["50 = 50", "50 === 50", "50 !== 50", "50 === \"50\""], key: "1"},
+    {question: "______ is normally used to remove the default styling applied by a web browser.", answers: ["script.js", "style.css", "index.html", "reset.css"], key: "3"}
+    ]
 let hsNames = [];
 let hsScores = [];
 
+let timeLeft = 90;
+let currentQuestion = 0;
+let questionsLeft = questionOptions.length-1;
+
 init();
 function init(){
-    hsNames = JSON.parse(localStorage.getItem("names"));
-    hsScores = JSON.parse(localStorage.getItem("scores"));
+    let storedNames = JSON.parse(localStorage.getItem("names"));
+    let storedScores = JSON.parse(localStorage.getItem("scores"));
+
+    if(storedNames !== null) {
+        hsNames = storedNames;
+    }
+
+    if (storedScores !== null) {
+        hsScores = storedScores;
+    }
+
+    renderScores();
 }
 
 function quiz() {
     mainPage.setAttribute("style", "display: none");
     quizPage.setAttribute("style", "display: flex");
+    correct.setAttribute("style", "display: none");
+    wrong.setAttribute("style", "display: none");
+    cycleQuestions();
     countdown();
 }
 
 function countdown() {
    
-    let timeLeft = 3;
-
     let timeInterval = setInterval(function () {
-        if (timeLeft > 1) {
+        if (questionsLeft < 0) {
             timeEl.textContent = "Time Remaining: " + timeLeft + " seconds";
+            displayScore.textContent = "Your final score is " + timeLeft + "!"
+            quizPage.setAttribute("style", "display: none");
+            endPage.setAttribute("style", "display: flex");
+            clearInterval(timeInterval);
+        }  
+        
+        if (timeLeft > 1) {
+            timeEl.textContent = "Time Remaining: " + timeLeft + " seconds";            
             timeLeft--;            
         }
         else if (timeLeft === 1) {
@@ -38,39 +87,131 @@ function countdown() {
         }
         else {
             timeEl.textContent = "Time Remaining: " + timeLeft + " seconds";
-            localStorage.setItem("current-score", timeLeft);
+            displayScore.textContent = "Your final score is " + timeLeft + "!"
             quizPage.setAttribute("style", "display: none");
             endPage.setAttribute("style", "display: flex");
             clearInterval(timeInterval);
-        }
-        
-        // if (wordArray.includes("_") == false) {
-        //     displayWord.textContent = "YOU WIN! :)";
-        //     playerWins++;
-        //     localStorage.setItem("wins", JSON.stringify(playerWins));
-        //     wins.textContent = localStorage.getItem("wins");
-        //     clearInterval(timeInterval);
-        // }              
+        }                            
     }, 1000);
+}
+
+function cycleQuestions() {
+    
+    if (questionsLeft < 0) {
+        return;
+    }
+    else {
+        question.textContent = questionOptions[currentQuestion].question;
+        let currentAnswers = questionOptions[currentQuestion].answers;
+        button1.textContent = currentAnswers[0];
+        button2.textContent = currentAnswers[1];
+        button3.textContent = currentAnswers[2];
+        button4.textContent = currentAnswers[3];  
+    }
+}
+
+function checkQuestion(selectedAnswer) {
+    const key = questionOptions[currentQuestion].key
+    if(selectedAnswer == key) {
+        correct.setAttribute("style", "display: block");
+        wrong.setAttribute("style", "display: none");
+    }
+    else {
+        wrong.setAttribute("style", "display: block");
+        correct.setAttribute("style", "display: none");
+        timeLeft -= 10;
+    }
+}
+
+function renderScores() {
+
+    scores.innerHTML = "";
+
+    for (let i = 0; i < hsNames.length; i++) {
+        let hsName = hsNames[i];
+        let hsScore = hsScores[i];
+
+        let li = document.createElement("li");
+        li.textContent = hsScore + " - " + hsName;
+
+        scores.appendChild(li);        
+    }
+
 }
 
 startQuiz.addEventListener("click", function() {
     quiz();
 })
 
+button1.addEventListener("click", function(event) {
+    checkQuestion(0);
+    currentQuestion++;
+    questionsLeft--;
+    cycleQuestions();
+}) 
+
+button2.addEventListener("click", function(event) {
+    checkQuestion(1);
+    currentQuestion++;
+    questionsLeft--;
+    cycleQuestions();
+}) 
+
+button3.addEventListener("click", function(event) {
+    checkQuestion(2);
+    currentQuestion++;
+    questionsLeft--;
+    cycleQuestions();
+}) 
+
+button4.addEventListener("click", function(event) {
+    checkQuestion(3);
+    currentQuestion++;
+    questionsLeft--;
+    cycleQuestions();
+}) 
+
 inputInitials.addEventListener("click", function() {
     let currentName = document.querySelector("#initials").value;
-    let currentScore = localStorage.getItem("current-score"); 
-    console.log(currentName);
-    console.log(currentScore);   
+    let currentScore = timeLeft;
     hsNames.push(currentName);
     hsScores.push(currentScore);
-    console.log(hsNames);
-    console.log(hsScores);
     localStorage.setItem("names", JSON.stringify(hsNames));
     localStorage.setItem("scores", JSON.stringify(hsScores));
-    console.log(localStorage);
+    
+    renderScores();
+
+    mainPage.setAttribute("style", "display: none");
+    quizPage.setAttribute("style", "display: none");
+    endPage.setAttribute("style", "display: none");
+    hscoresPage.setAttribute("style", "display: flex");
 })
+
+hscoresBtn.addEventListener("click", function() {
+    mainPage.setAttribute("style", "display: none");
+    quizPage.setAttribute("style", "display: none");
+    endPage.setAttribute("style", "display: none");
+    hscoresPage.setAttribute("style", "display: flex");
+})
+
+reset.addEventListener("click", function() {
+    localStorage.clear();
+    scores.innerHTML = "";
+    hsNames = [];
+    hsScores = [];
+})
+
+goBack.addEventListener("click", function(){
+    mainPage.setAttribute("style", "display: flex");
+    quizPage.setAttribute("style", "display: none");
+    endPage.setAttribute("style", "display: none");
+    hscoresPage.setAttribute("style", "display: none");
+    timeLeft = 90;
+    currentQuestion = 0;
+    questionsLeft = questionOptions.length-1;
+    timeEl.textContent = "Time Remaining: " + timeLeft + " seconds";
+})
+
 
 
 
