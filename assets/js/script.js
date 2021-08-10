@@ -76,7 +76,7 @@ let timeLeft = 90;
 let currentQuestion = 0;
 let questionsLeft = questionOptions.length-1;
 
-// Init that runs on page load
+// Init that runs on page load to get scores from local storage in case they go the the highscores page before playing the game
 init();
 
 function init(){
