@@ -13,6 +13,7 @@ let inputInitials = document.querySelector('.input-initials');
 
 // HTML sections
 let mainPage = document.querySelector('main');
+let header = document.querySelector('header');
 let quizPage = document.querySelector('.quiz');
 let endPage = document.querySelector('.all-done');
 let displayScore = document.querySelector('.display-score');
@@ -100,6 +101,8 @@ function init(){
 // Function to start displaying the questions and starts the countdown
 function quiz() {
 
+    header.setAttribute("style", "justify-content: flex-end;");
+    hscoresBtn.setAttribute("style", "display: none");
     mainPage.setAttribute("style", "display: none");
     quizPage.setAttribute("style", "display: flex");
     correct.setAttribute("style", "display: none");
@@ -121,6 +124,8 @@ function countdown() {
 
             quizPage.setAttribute("style", "display: none");
             endPage.setAttribute("style", "display: flex");
+            header.setAttribute("style", "justify-content: space-between;");
+            hscoresBtn.setAttribute("style", "display: inline");
 
             clearInterval(timeInterval);
         }  
@@ -142,6 +147,8 @@ function countdown() {
 
             quizPage.setAttribute("style", "display: none");
             endPage.setAttribute("style", "display: flex");
+            header.setAttribute("style", "justify-content: space-between;");
+            hscoresBtn.setAttribute("style", "display: inline");
 
             clearInterval(timeInterval);
         }                            

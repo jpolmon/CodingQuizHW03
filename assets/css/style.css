@@ -15,7 +15,8 @@ header {
     margin: 20px;
 }
 
-header button {
+.highscores-button {
+    display: inline;
     padding: 5px;
     background-color: var(--buttonColor);
 }
